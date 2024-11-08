@@ -4,34 +4,43 @@ import React from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+interface tabLayoutProps  {
+  showTabs : boolean
+}
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const colorScheme = 'light';
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor:Colors[colorScheme ?? 'light'].tint ,
         headerShown: false,
-      }}>
+        tabBarStyle:{backgroundColor:'white',paddingTop:4     }
+      }}  >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: '',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
-        }}
+        }} 
       />
-      <Tabs.Screen
+     
+       <Tabs.Screen
         name="explore"
         options={{
-          title: 'Explore',
+          title: '',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'bag-handle' : 'bag-handle-outline'} color={color} />
+            
           ),
         }}
       />
+      
     </Tabs>
-  );
+  ) ;
 }

@@ -1,90 +1,106 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Platform } from 'react-native';
+import { StyleSheet, Image, Platform, ScrollView, View, Text, Pressable, TouchableOpacity } from 'react-native';
 
 import { Collapsible } from '@/components/Collapsible';
 import { ExternalLink } from '@/components/ExternalLink';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { useEffect, useRef, useState } from 'react';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList, Product } from '../types/navigation'; 
+
 
 export default function TabTwoScreen() {
+  const[allProducts, setAllProducts] = useState<Product[]>([]);
+  const[currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 5;
+  useEffect(() => {
+    fetch('https://fakestoreapi.com/products?limit=10')
+    .then(result => result.json())
+    .then(data => {
+      const allProdsData: Product[] = data.map((prod:Product) => {
+        return({
+            image: prod.image,
+            title: prod.title,
+            price: prod.price,
+            category: prod.category,
+            description:prod.description
+          })
+      })
+      setAllProducts(allProdsData);
+    })
+  },[])
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = (startIndex + itemsPerPage);
+  const paginatedProducts = allProducts.slice(startIndex, endIndex);
+  const handleNextPage = () => {
+    if(endIndex < allProducts.length){
+      setCurrentPage(currentPage + 1);
+      scrollToTop();
+    }
+    
+  }
+  const handlePrevPage = () => {
+    if(currentPage > 1){
+      setCurrentPage(currentPage - 1);
+      scrollToTop();
+    }
+    
+  }
+
+  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollToTop = () => {
+    scrollViewRef.current?.scrollTo({y:0, animated:true});
+  }
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={<Ionicons size={310} name="code-slash" style={styles.headerImage} />}>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user's current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText> library
-          to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+    <ScrollView ref={scrollViewRef} showsVerticalScrollIndicator={false}>
+      <Text className="text-3xl font-light text-fuchsia-600  mt-5  text-center p-4" >
+        Browse through everything
+      </Text>
+      <View>
+
+      </View>
+      {paginatedProducts.map( (product:Product, index:number) => {
+        return(
+         
+           
+                <View key={index} className="flex flex-col h-max mb-4 self-center w-3/4  rounded-xl space-y-4 p-2  mt-5 mx-2" style={{
+                    backgroundColor: 'white',
+                    borderRadius: 12,
+                    shadowColor: '#7F00FF',
+                    shadowOffset: { width: 0, height: 4 },
+                    shadowOpacity: 0.1,
+                    shadowRadius: 8,
+                    elevation: 5,
+                }} >
+                  <TouchableOpacity  onPress={() => navigation.navigate('productDetails', product)}>
+                    <Image
+                        source={{ uri: product.image }}
+                        className="w-40 h-40 self-center   rounded-xl"
+                        resizeMode="contain"
+                    />
+                    <View className="flex  rounded-xl py-0 self-center    flex-col space-y-1">
+                        <Text className="text-md w-40 h-max text-center font-bold text-black">{product.title}</Text>
+                        <Text className="w-40 h-max text-md  font-extrabold text-center text-gray-700">{`$${product.price}`}</Text>
+                    </View>
+                    </TouchableOpacity>
+                </View>
+          
+        )
+      })}
+      <View className="flex mb-4 flex-row justify-between p-5">
+        {currentPage > 1 && 
+        <Pressable className={`  border-2 border-gray-300 p-2 rounded-xl  outline `}  onPress={handlePrevPage}><Text className="text-md font-medium text-[#7F00FF]">Previous</Text></Pressable>
+        }
+        {endIndex < allProducts.length &&
+        <Pressable className=" border-2 border-gray-300 p-2 rounded-xl" onPress={handleNextPage}><Text className="text-md font-medium  text-[#7F00FF]">{`Next`} </Text></Pressable>
+        }
+        </View>
+    </ScrollView>
   );
 }
 
