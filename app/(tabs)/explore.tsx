@@ -66,8 +66,6 @@ export default function TabTwoScreen() {
       </View>
       {paginatedProducts.map( (product:Product, index:number) => {
         return(
-         
-           
                 <View key={index} className="flex flex-col h-max mb-4 self-center w-3/4  rounded-xl space-y-4 p-2  mt-5 mx-2" style={{
                     backgroundColor: 'white',
                     borderRadius: 12,
@@ -104,15 +102,3 @@ export default function TabTwoScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-});
