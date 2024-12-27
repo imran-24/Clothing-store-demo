@@ -1,5 +1,5 @@
 # Intruction 
-\<h2>How to Run the Project</h2>
+<h2>How to Run the Project</h2>
 <ol>
   <li>
     Clone the repository:
@@ -18,6 +18,8 @@
     <pre><code>npx expo start</code></pre>
   </li>
 </ol>
+
+
 
 
 # Welcome  👋
