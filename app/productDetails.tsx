@@ -1,23 +1,30 @@
-import { useRoute } from "@react-navigation/native"
-import { Image, Pressable, ProcessedColorValue, ScrollView, Text, View } from "react-native"
-import { RootStackParamList, Product } from '../types/navigation';
-import { Collapsible } from "@/components/Collapsible";
-import { useCartStore } from "@/components/cartStore";
+// import { useRoute } from "@react-navigation/native"
+import {
+  Image,
+  Pressable,
+  ProcessedColorValue,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
+// import { RootStackParamList, Product } from '../types/navigation';
+// import { Collapsible } from "@/components/Collapsible";
+// import { useCartStore } from "@/components/cartStore";
 
+const productDetails: React.FC = () => {
+//   const route = useRoute();
+  // console.log(route.params);
+  // const {image, title, price, description,category} = route.params as Product;
+  // const addToCart = useCartStore((state) => state.addToCart);
 
-
-const productDetails:React.FC = () => {
-    const route = useRoute();
-    const {image, title, price, description,category} = route.params as Product;
-    const addToCart = useCartStore((state) => state.addToCart);
-
-    const handleAdd = () => {
-        addToCart({image,title,price,description,category});
-    }
-    return(
-        <>
-    <ScrollView contentContainerStyle={{paddingBottom:100}}>
-        <View className="container flex flex-col w-[100vw] h-[100vh] ">
+  // const handleAdd = () => {
+  //     addToCart({image,title,price,description,category});
+  // }
+  return (
+    <SafeAreaView>
+      <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
+        {/* <View className="container flex flex-col w-[100vw] h-[100vh] ">
             <View className="w-1/2 h-1/2 self-center  " style={{elevation:5, backgroundColor:'white', shadowOpacity:0.4, shadowOffset:{width:0.4, height:5},shadowColor: '#7F00FF'}}>
             <Image source={{uri:image}} resizeMode="contain" style={{width:'100%', height:'100%'}}/>
             </View>
@@ -32,16 +39,16 @@ const productDetails:React.FC = () => {
             </View>
             
      
-        </View>
-        
-        
-    </ScrollView>
-    <Pressable onPress={handleAdd} className="bg-[#5f02a7]  p-3">
-    <Text className="text-xl text-center font-bold text-white">Add to Cart</Text>
-    </Pressable>
-   </>
-    )
-    
-}
+        </View> */}
+        <Text> Hi there I am a product details page</Text>
+      </ScrollView>
+      {/* <Pressable onPress={handleAdd} className="bg-[#5f02a7]  p-3"> */}
+      <Text className='text-xl text-center font-bold text-white'>
+        Add to Cart
+      </Text>
+      {/* </Pressable> */}
+    </SafeAreaView>
+  );
+};
 
 export default productDetails;
